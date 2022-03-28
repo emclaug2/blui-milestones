@@ -1,0 +1,51 @@
+<div class="app-root">
+    <mat-toolbar color="primary" class="mat-elevation-z2 app-toolbar">
+        <div [style.marginLeft.px]="isSmall() ? 8 : 24">Brightlayer UI GitHub Milestones</div>
+    </mat-toolbar>
+    <div class="app-body" [style.backgroundColor]="colors.white[50]">
+        <div class="app-body-content">
+            <mat-spinner *ngIf='loading'></mat-spinner>
+            <mat-nav-list
+                *ngIf="milestones.length > 0"
+                [style.paddingTop.px]="0"
+                style="width: 100%"
+                class="mat-elevation-z4"
+            >
+                <blui-info-list-item
+                    *ngFor="let milestone of milestones"
+                    divider="full"
+                    [iconAlign]="'center'"
+                    [hidePadding]="true"
+                    (click)="openMilestone(milestone)"
+                >
+                    <div blui-icon>
+                        <img [src]="milestone.avatarUrl" style="height: 24px; border-radius: 50%"/>
+                    </div>
+                    <div blui-title>
+                        {{ milestone.repoName }}
+                    </div>
+                    <div blui-subtitle>
+                        {{ milestone.title }}
+                        <span *ngIf='milestone.description'>&#183;</span>
+                        {{ milestone.description }}
+                    </div>
+                    <div blui-right-content *ngIf="milestone.dueDate">
+                        <blui-list-item-tag
+                            *ngIf="milestone.daysOverdue > 0"
+                            [backgroundColor]="colors.red[500]"
+                            label="Overdue"
+                        ></blui-list-item-tag>
+                        <div style="display: flex; flex-direction: column; text-align: right; width: 100px">
+                            <div style="width: 100%">
+                                {{ milestone.dueDate?.toLocaleString().split(',')[0] }}
+                            </div>
+                            <div style="width: 100%; font-size: 12px; font-weight: 400; margin-top: -4px">
+                                {{ milestone.daysOverdue > 0 ? 'by' : 'in'}} <strong>{{ -milestone.daysOverdue }} days</strong>
+                            </div>
+                        </div>
+                    </div>
+                </blui-info-list-item>
+            </mat-nav-list>
+        </div>
+    </div>
+</div>
